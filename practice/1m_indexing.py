@@ -30,7 +30,7 @@ build_disk_index(
     graph_degree=64,                # ✅ 새로 추가
     search_memory_maximum=2.0,      # ✅ GB 단위로 변경
     build_memory_maximum=8.0,       # ✅ GB 단위로 변경
-    num_threads=os.cpu_count(),
+    num_threads=2,
     pq_disk_bytes=0
 )
 build_time = time.time() - start
@@ -38,7 +38,7 @@ print(f"Index built in {build_time:.2f} seconds")
 
 # --- 인덱스 로드 및 검색 ---
 print("Loading index for search...")
-index = StaticDiskIndex(index_directory=index_dir,num_threads=os.cpu_count(),
+index = StaticDiskIndex(index_directory=index_dir,num_threads=2,
     num_nodes_to_cache=10000)
 
 all_neighbors = []
