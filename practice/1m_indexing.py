@@ -4,7 +4,7 @@ import os
 from diskannpy import build_disk_index, StaticDiskIndex
 
 # --- 설정 ---
-num_vectors = 1_000_000
+num_vectors = 10_000
 dim = 1024
 K = 10
 index_dir = "diskann_index"
@@ -27,19 +27,19 @@ build_disk_index(
     distance_metric="l2",
     index_directory=index_dir,
     complexity=64,
-    graph_build_threads=os.cpu_count(),
-    search_memory_budget=2 * 1024,  # MB
-    build_memory_budget=8 * 1024,   # MB
-    alpha=1.2,
+    graph_degree=64,                # ✅ 새로 추가
+    search_memory_maximum=2.0,      # ✅ GB 단위로 변경
+    build_memory_maximum=8.0,       # ✅ GB 단위로 변경
     num_threads=os.cpu_count(),
-    pq_disk_bytes=0  # disable PQ compression for simplicity
+    pq_disk_bytes=0
 )
 build_time = time.time() - start
 print(f"Index built in {build_time:.2f} seconds")
 
 # --- 인덱스 로드 및 검색 ---
 print("Loading index for search...")
-index = StaticDiskIndex(index_dir)
+index = StaticDiskIndex(index_directory=index_dir,num_threads=os.cpu_count(),
+    num_nodes_to_cache=10000)
 
 print("Running queries...")
 start = time.time()
