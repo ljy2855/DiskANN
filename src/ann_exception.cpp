@@ -4,6 +4,7 @@
 #include "ann_exception.h"
 #include <sstream>
 #include <string>
+#include <cstdint>
 
 namespace diskann
 {
