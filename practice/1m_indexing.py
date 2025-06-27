@@ -4,7 +4,7 @@ import os
 from diskannpy import build_disk_index, StaticDiskIndex
 
 # --- 설정 ---
-num_vectors = 10_000
+num_vectors = 100_000
 dim = 1024
 K = 10
 index_dir = "diskann_index"
