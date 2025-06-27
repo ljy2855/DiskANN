@@ -41,11 +41,23 @@ print("Loading index for search...")
 index = StaticDiskIndex(index_directory=index_dir,num_threads=os.cpu_count(),
     num_nodes_to_cache=10000)
 
+all_neighbors = []
+all_distances = []
+
+
 print("Running queries...")
 start = time.time()
-neighbors, distances = index.search(query, K)
+for q in query:  # query: shape = (10, 1024)
+    neighbors, distances = index.search(q, k_neighbors=10, complexity=100)
+    all_neighbors.append(neighbors)
+    all_distances.append(distances)
+
 search_time = time.time() - start
+
+import numpy as np
+all_neighbors = np.stack(all_neighbors)
+all_distances = np.stack(all_distances)
 
 print(f"Search time for {len(query)} queries: {search_time:.2f} seconds")
 print(f"Avg latency per query: {search_time / len(query) * 1000:.2f} ms")
-print("Top-1 neighbor indices for each query:", neighbors[:, 0])
+print("Top-1 neighbor indices for each query:", all_neighbors[:, 0])
